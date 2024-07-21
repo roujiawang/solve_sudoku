@@ -92,36 +92,12 @@ def generate_sudoku(seed=None, initial_number_count=None):
     def remove_numbers():
         positions = [(r, c) for r in range(9) for c in range(9)]
         random.shuffle(positions)
-        removed_count = 0
-
         while positions:
             row, col = positions.pop()
-            if board[row][col] == 0:
-                continue  # Skip if the cell is already empty
-            
             backup = board[row][col]
             board[row][col] = 0
-
-            # Check if the board remains unique
-            solution_count = count_solutions(board)
-            print(f"Removed number from ({row}, {col}), backup was {backup}")
-            print_board(board)
-            print(f"Number of solutions after removal: {solution_count}")
-
-            if solution_count != 1:
+            if count_solutions(board) != 1:
                 board[row][col] = backup
-                print("Reverted removal as board became non-unique")
-            else:
-                removed_count += 1
-                print(f"Board remains unique. {removed_count} cells removed.")
-
-            # Verify board state after reversion
-            if solution_count == 0:
-                print("Board is unsolvable after reversion. Debugging:")
-                print_board(board)
-
-        print("Final board:")
-        print_board(board)
     
     def remove_numbers_until(clues=17):
         positions = [(r, c) for r in range(9) for c in range(9)]
